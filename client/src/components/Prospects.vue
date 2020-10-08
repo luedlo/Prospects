@@ -1,10 +1,11 @@
 <template>
   <div class="prospects">
-    <h3>Prospectos</h3>
+    <h3 class="center color-main">Prospectos</h3>
+    <hr>
 
     <!-- add -->
     <div class="fixed-action-btn">
-      <router-link id="add" v-bind:to="{ name: 'NewProspect' }" class="btn-floating btn-large waves-effect waves-light">
+      <router-link id="add" v-bind:to="{ name: 'NewProspect' }" class="btn-floating btn-large waves-effect waves-light tooltipped" data-position="left" data-tooltip="Agregar Prospecto">
         <i class="material-icons large">add</i>
       </router-link>
       <!-- Tap Target Structure -->
@@ -16,9 +17,9 @@
       </div>
     </div>
 
-    <div v-if="prospects.length > 0" class="table-wrap">
+    <div v-if="prospects.length > 0">
       <!-- data -->
-      <table>
+      <table class="striped centered responsive-table z-depth-1">
         <thead class="bg-submain white-text">
           <tr>
             <th>Nombre(s)</th>
@@ -28,7 +29,7 @@
             <th align="center">Acciones</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="white">
           <tr v-for="(_, index) in prospects" :key="index">
             <td>{{ empty(_.firstname) }}</td>
             <td>{{ empty(_.lastname1) }}</td>
@@ -39,10 +40,13 @@
               <span v-else class="badge bg-error">Rechazado</span>
             </td>
             <td align="center">
-              <router-link class="btn waves-effect waves-light bg-warning" v-bind:to="{ name: 'EditProspect', params: { id: _._id } }">
+              <router-link class="btn waves-effect waves-light bg-submain tooltipped" data-position="top" data-tooltip="Ver" v-bind:to="{ name: 'Prospect', params: { id: _._id } }">
+                <i class="material-icons">visibility</i>
+              </router-link>
+              <router-link class="btn waves-effect waves-light bg-warning tooltipped" data-position="top" data-tooltip="Editar" v-bind:to="{ name: 'EditProspect', params: { id: _._id } }">
                 <i class="material-icons">edit</i>
               </router-link>
-              <a class="btn waves-effect waves-light bg-error" href @click.prevent="deleteProspect(_._id)">
+              <a class="btn waves-effect waves-light bg-error tooltipped" data-position="top" data-tooltip="Eliminar" href @click.prevent="deleteProspect(_._id)">
                 <i class="material-icons">delete</i>
               </a>
             </td>
@@ -50,8 +54,9 @@
         </tbody>
       </table>
     </div>
-    <div v-else>
-      There are no prospects.. Lets add one now <br /><br />
+    <div class="grey-text" v-else>
+      <i class="material-icons large">person</i>
+      <h5 class="m-0">No hay Prospectos</h5>
     </div>
   </div>
 </template>
@@ -61,7 +66,7 @@ import M from 'materialize-css'
 import ProspectsService from '@/services/ProspectsService'
 
 export default {
-  name: 'prospects',
+  name: 'Prospects',
   data () {
     return {
       prospects: []
@@ -70,9 +75,8 @@ export default {
   mounted () {
     this.getProspects()
     // this.$alert_error.fire({
-    //   icon: 'error',
-    //   html: '<h6 class="white-text bold">Ha ocurrido un error!</h6>' +
-    //         '<span class="white-text">Intente realizar de nuevo la operación y si persiste el problema favor de contactar al Soporte Técnico</span>',
+    //   html: '<h5 class="bold">Ha ocurrido un error!</h5>' +
+    //         '<span>Intente realizar de nuevo la operación y si persiste el problema favor de contactar al Soporte Técnico</span>',
     //   confirmButtonText: 'Aceptar'
     // }).then(() => {})
   },
@@ -82,9 +86,25 @@ export default {
       this.prospects = response.data.prospects
     },
 
-    async deleteProspect (id) {
-      await ProspectsService.deleteProspect(id)
-      this.getProspects()
+    deleteProspect (id) {
+      this.$alert_warning.fire({
+        html: '<h5 class="bold">Eliminar Prospecto</h5>' +
+              '<span>¿Estás seguro que deseas eliminarlo?<br><p class="grey-text">(Esta acción no es revertible!)</p></span>',
+        showCancelButton: true,
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await ProspectsService.deleteProspect(id)
+          this.getProspects()
+          this.$alert_success.fire({
+            icon: 'success',
+            title: 'Eliminado',
+            text: 'El Prospecto ha sido eliminado!',
+            confirmButtonText: 'Aceptar'
+          })
+        }
+      })
     },
 
     empty (data) {
@@ -92,6 +112,7 @@ export default {
     }
   },
   updated () {
+    M.Tooltip.init(document.querySelectorAll('.tooltipped'), {})
     M.TapTarget.init(document.querySelector('.tap-target'), {})
     if (!this.prospects.length) {
       M.TapTarget.getInstance(document.querySelector('.tap-target')).open()

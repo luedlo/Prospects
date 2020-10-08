@@ -1,7 +1,23 @@
 :root {
-    --main: #141E30;
-    --submain: #243B55;
-    --secondary: #00AC68;
-    --warning: #F6BD60;
-    --error: #C33C54;
+  --main: #141E30;
+  --submain: #243B55;
+  --secondary: #00AC68;
+  --warning: #F6BD60;
+  --error: #C33C54;
+}
+
+html {
+  width: 100vw;
+  height: 100vh;
+  font-size: 1em;
+  background: #00000008;
+  background-repeat: repeat;
+  background-size: 408px 408px;
+  background-image:url("data:image/svg+xml,%3Csvg id='Layer_1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Cstyle%3E.st0%7Bfill:rgba(255,255,255,1)%7D%3C/style%3E%3Cpath class='st0' d='M125 250v125l125 125V375zM250 125L125 0v125l125 125zM250 250v125l125-125V125zM500 250V125L375 0v125zM500 500V375L375 250v125zM125 500V375L0 500zM375 500V375L250 500zM250 0v125L375 0zM0 125L125 0H0zM0 250v125l125-125V125z'/%3E%3C/svg%3E");
+}
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

@@ -13,6 +13,7 @@
 .color-error { color: var(--error) !important; }
 
 .bold { font-weight: bold !important; }
+.shadow { text-shadow: 0 0 10px black; }
 
 
 /* Margin */
