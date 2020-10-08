@@ -1,2 +1,2 @@
 # Prospects
-Sistema que permite a los promotores dar seguimiento de sus prospectos a ser clientes
+System that allows to promoter give follow to the prospects that can be clients

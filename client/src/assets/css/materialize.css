@@ -1,0 +1,8 @@
+/*************************************************************************/
+/****************************** Materialize ******************************/
+/*************************************************************************/
+.btn { padding: 0 10px; }
+.btn, .btn-floating { background-color: var(--secondary); }
+.btn i, .btn-floating i { text-shadow: 0px 0px 2px black; }
+.badge { color: white !important; border-radius: 5px; }
+td, th { text-align: center; }
