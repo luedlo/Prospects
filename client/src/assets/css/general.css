@@ -21,3 +21,37 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.prospect .content {
+  border-radius: 10px;
+  background-color: whitesmoke;
+  box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
+}
+
+.prospect .img, .prospect .docs {
+  color: white;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+  box-shadow: 0px 1px 3px 0px #000A;
+  border-radius: 10px 10px 25px 25px;
+}
+
+.prospect .data {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 20px 0;
+}
+
+.prospect .data .info {
+  display: block;
+  font-size: 12px;
+  margin-top: -10px;
+}
+
+.prospect .halfway {
+  position: relative;
+  float: right;
+  margin-right: 20px;
+  margin-top: -30px;
+}

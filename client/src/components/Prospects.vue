@@ -43,18 +43,12 @@
               <router-link class="btn waves-effect waves-light bg-submain tooltipped" data-position="top" data-tooltip="Ver" v-bind:to="{ name: 'Prospect', params: { id: _._id } }">
                 <i class="material-icons">visibility</i>
               </router-link>
-              <router-link class="btn waves-effect waves-light bg-warning tooltipped" data-position="top" data-tooltip="Editar" v-bind:to="{ name: 'EditProspect', params: { id: _._id } }">
-                <i class="material-icons">edit</i>
-              </router-link>
-              <a class="btn waves-effect waves-light bg-error tooltipped" data-position="top" data-tooltip="Eliminar" href @click.prevent="deleteProspect(_._id)">
-                <i class="material-icons">delete</i>
-              </a>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="grey-text" v-else>
+    <div class="grey-text center" v-else>
       <i class="material-icons large">person</i>
       <h5 class="m-0">No hay Prospectos</h5>
     </div>
@@ -72,6 +66,16 @@ export default {
       prospects: []
     }
   },
+  methods: {
+    async getProspects () {
+      const response = await ProspectsService.fetchProspects()
+      this.prospects = response.data.prospects
+    },
+
+    empty (data) {
+      return ['', null, undefined].includes(data) ? '(Vacío)' : data
+    }
+  },
   mounted () {
     this.getProspects()
     // this.$alert_error.fire({
@@ -79,37 +83,6 @@ export default {
     //         '<span>Intente realizar de nuevo la operación y si persiste el problema favor de contactar al Soporte Técnico</span>',
     //   confirmButtonText: 'Aceptar'
     // }).then(() => {})
-  },
-  methods: {
-    async getProspects () {
-      const response = await ProspectsService.fetchProspects()
-      this.prospects = response.data.prospects
-    },
-
-    deleteProspect (id) {
-      this.$alert_warning.fire({
-        html: '<h5 class="bold">Eliminar Prospecto</h5>' +
-              '<span>¿Estás seguro que deseas eliminarlo?<br><p class="grey-text">(Esta acción no es revertible!)</p></span>',
-        showCancelButton: true,
-        confirmButtonText: 'Eliminar',
-        cancelButtonText: 'Cancelar'
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          await ProspectsService.deleteProspect(id)
-          this.getProspects()
-          this.$alert_success.fire({
-            icon: 'success',
-            title: 'Eliminado',
-            text: 'El Prospecto ha sido eliminado!',
-            confirmButtonText: 'Aceptar'
-          })
-        }
-      })
-    },
-
-    empty (data) {
-      return ['', null, undefined].includes(data) ? '(Vacío)' : data
-    }
   },
   updated () {
     M.Tooltip.init(document.querySelectorAll('.tooltipped'), {})

@@ -17,11 +17,6 @@ export default new Router({
       component: HelloWorld
     },
     {
-      path: '/prospect/:id',
-      name: 'Prospect',
-      component: Prospect
-    },
-    {
       path: '/prospects',
       name: 'Prospects',
       component: Prospects
@@ -30,6 +25,11 @@ export default new Router({
       path: '/prospect/new',
       name: 'NewProspect',
       component: NewProspect
+    },
+    {
+      path: '/prospect/:id',
+      name: 'Prospect',
+      component: Prospect
     },
     {
       path: '/prospect/edit/:id',

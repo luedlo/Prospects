@@ -14,7 +14,8 @@
 
 .bold { font-weight: bold !important; }
 .shadow { text-shadow: 0 0 10px black; }
-
+.uppercase { text-transform: uppercase; }
+/* .active { background: var(--main); } */
 
 /* Margin */
 .m-0 { margin: 0px !important; }

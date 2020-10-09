@@ -10,7 +10,7 @@
             ConCrédito
           </router-link>
         </div>
-        <div>
+        <div class="hide-on-med-and-up">
           <router-link v-bind:to="{ name: 'HelloWorld' }" class="brand-logo ml-1 center">
             ConCrédito
           </router-link>
@@ -18,14 +18,14 @@
 
         <a data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li><router-link v-bind:to="{ name: 'Prospects' }">Prospectos</router-link></li>
-          <li><router-link v-bind:to="{ name: 'HelloWorld' }">Acerca de..</router-link></li>
+          <li><router-link class="waves-effect" v-bind:to="{ name: 'Prospects' }">Prospectos</router-link></li>
+          <li><router-link class="waves-effect" v-bind:to="{ name: 'HelloWorld' }">Acerca de..</router-link></li>
         </ul>
       </div>
     </nav>
 
     <ul id="slide-out" class="sidenav">
-      <li><div class="user-view">
+      <li class="vector"><div class="user-view">
         <div class="background">
         </div>
         <a><img class="responsive-img circle" src="./assets/img/logo.png" alt="Logo" /></a>
@@ -39,7 +39,7 @@
       <li><router-link class="waves-effect sidenav-close" v-bind:to="{ name: 'HelloWorld' }"><i class="material-icons">info</i>Acerca de..</router-link></li>
     </ul>
 
-    <div class="container">
+    <div class="container mt-3">
       <router-view/>
     </div>
   </div>

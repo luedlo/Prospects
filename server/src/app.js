@@ -14,9 +14,9 @@ const mongoose = require('mongoose')
 const uri = "mongodb+srv://LELV:81997912@cluster0.qljii.mongodb.net/ProspectsDB?retryWrites=true&w=majority"
 mongoose.connect(uri)
 const db = mongoose.connection;
-db.on('error', console.error.bind(console, "\n\nError in Connection to MongoDB:\n\n"))
+db.on('error', console.error.bind(console, "\n\n\x1b[36m Error in Connection to MongoDB:\x1b[0m\n\n"))
 db.once('open', (callback) => {
-  console.log("Connection Succeeded!")
+  console.log("\n\n\x1b[36m Connection Succeeded! \x1b[0m\n\n")
 })
 
 // ENV
