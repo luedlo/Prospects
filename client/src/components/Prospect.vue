@@ -95,7 +95,7 @@
       <!-- data -->
       <div class="row data">
         <div v-if="docs.length">
-          <a v-for="(_, index) in docs" :key="index" @click="doc = _" class="col m3 s6 waves-effect center modal-trigger" href="#preview">
+          <a v-for="(_, index) in docs" :key="index" @click="doc = _, modal = true" class="col m3 s6 waves-effect center modal-trigger" href="#preview">
             <i class="material-icons large color-secondary">insert_drive_file</i>
             <span class="info grey-text">
               <span class="uppercase">{{ type(_.data) }}</span>
@@ -113,14 +113,14 @@
 
     <!-- Modal Structure -->
     <div id="preview" class="modal bottom-sheet">
-      <div class="modal-content center grey">
+      <div v-if="modal" class="modal-content center grey">
         <h5 class="bg-secondary m-0 p-3 white-text">
           Visualizando: "{{ `${doc.name}.${type(doc.data)}` }}"
         </h5>
-        <object v-if="!errorOnLoad" :data="doc.data" class="p-2" width="100%" @error="errorOnLoad = true" height="77%">
+        <object v-if="!errorOnLoad" :data="doc.data" class="p-2" width="100%" @error="errorOnLoad = true" height="80%">
             <embed :src="doc.data" type="application/*" />
         </object>
-        <div v-if="errorOnLoad" class="mt-5">
+        <div v-else class="mt-5">
           <i class="material-icons large">insert_drive_file</i>
           <h6>
             No ha sido posible cargar el documento.
@@ -162,12 +162,12 @@ export default {
       status: '',
       description: '',
 
-      doc: [
-        'name',
-        'data'
-      ],
-      embedHeight: 500,
-      errorOnLoad: false
+      doc: {
+        name: '',
+        data: ''
+      },
+      errorOnLoad: false,
+      modal: false
     }
   },
   methods: {
@@ -203,7 +203,7 @@ export default {
           this.$alert_success.fire({
             icon: 'success',
             title: 'Eliminado',
-            text: 'El Prospecto ha sido eliminado!',
+            text: 'El Prospecto ha sido eliminado exitosamente!',
             confirmButtonText: 'Aceptar'
           })
         }
@@ -234,9 +234,14 @@ export default {
     this.id = this.$route.params.id
   },
   mounted () {
+    let me = this
     this.getProspect()
     M.Tooltip.init(document.querySelectorAll('.tooltipped'), {})
-    M.Modal.init(document.querySelectorAll('.modal'), {})
+    M.Modal.init(document.querySelectorAll('.modal'), {
+      onCloseEnd: () => {
+        me.modal = false
+      }
+    })
   }
 }
 </script>

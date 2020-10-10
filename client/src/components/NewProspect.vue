@@ -1,77 +1,167 @@
 <template>
-  <div class="prospects">
-    <h3 class="center color-main">Evaluar Prospecto</h3>
-    <hr>
-
-    <div class="row">
-      <div class="input-field col m12 s12">
-        <input id="name" type="text" v-model="firstname">
-        <label for="name">Nombre(s)</label>
+  <div class="prospect">
+    <div class="col m12 s12 content">
+      <!-- title -->
+      <div class="row docs bg-submain center pb-2">
+        <h5 class="pt-2 mb-0">Nuevo Prospecto</h5>
       </div>
 
-      <div class="input-field col m6 s12">
-        <input id="lastname1" type="text" v-model="lastname1">
-        <label for="lastname1">Apellido Paterno</label>
-      </div>
-
-      <div class="input-field col m6 s12">
-        <input id="lastname2" type="text" v-model="lastname2">
-        <label for="lastname2">Apellido Materno</label>
-      </div>
-
-      <div class="input-field col m6 s12">
-        <input id="street" type="text" v-model="street">
-        <label for="street">Calle</label>
-      </div>
-      <div class="input-field col m6 s12">
-        <input id="housenumber" type="text" v-model="housenumber">
-        <label for="housenumber">Nº</label>
-      </div>
-
-      <div class="input-field col m6 s12">
-        <input id="suburb" type="text" v-model="suburb">
-        <label for="suburb">Colonia</label>
-      </div>
-
-      <div class="input-field col m6 s12">
-        <input id="CP" type="text" v-model="postalcode">
-        <label for="CP">Código Postal</label>
-      </div>
-
-      <div class="input-field col m6 s12">
-        <input id="postalcode" type="text" v-model="phone">
-        <label for="postalcode">Teléfono</label>
-      </div>
-
-      <div class="input-field col m6 s12">
-        <input id="RFC" type="text" v-model="RFC">
-        <label for="RFC">RFC</label>
-      </div>
-
-      <div class="file-field input-field col m12 s12">
-        <div class="btn p-0">
-          <span><i class="material-icons px-1">file_upload</i></span>
-          <input name="Imagen de Variante" accept="docs/*" type="file" ref="file" v-on:change="selectFile()" class="m-0 p-0 inputFile">
+      <!-- data -->
+      <div class="row data">
+        <div class="input-field col m12 s12">
+          <input id="name" type="text" v-model="firstname">
+          <label for="name">Nombre(s)</label>
         </div>
-        <div class="file-path-wrapper">
-          <input class="file-path file-pathV" type="text" placeholder="Subir una Imagen">
+
+        <div class="input-field col m6 s12">
+          <input id="lastname1" type="text" v-model="lastname1">
+          <label for="lastname1">Apellido Paterno</label>
+        </div>
+
+        <div class="input-field col m6 s12">
+          <input id="lastname2" type="text" v-model="lastname2">
+          <label for="lastname2">Apellido Materno</label>
+        </div>
+
+        <div class="input-field col m6 s12">
+          <input id="street" type="text" v-model="street">
+          <label for="street">Calle</label>
+        </div>
+        <div class="input-field col m6 s12">
+          <input id="housenumber" type="text" v-model="housenumber">
+          <label for="housenumber">Nº</label>
+        </div>
+
+        <div class="input-field col m6 s12">
+          <input id="suburb" type="text" v-model="suburb">
+          <label for="suburb">Colonia</label>
+        </div>
+
+        <div class="input-field col m6 s12">
+          <input id="CP" type="text" v-model="postalcode">
+          <label for="CP">Código Postal</label>
+        </div>
+
+        <div class="input-field col m6 s12">
+          <input id="postalcode" type="text" v-model="phone">
+          <label for="postalcode">Teléfono</label>
+        </div>
+
+        <div class="input-field col m6 s12">
+          <input id="RFC" type="text" v-model="RFC">
+          <label for="RFC">RFC</label>
         </div>
       </div>
+    </div>
 
-      <div class="input-field col m6 s12">
-        <input id="docName" type="text" v-model="docName">
-        <label for="docName">Nombre: </label>
+    <div class="col m12 s12 content">
+      <!-- docs -->
+      <div class="row docs bg-submain center pb-2">
+        <h5 class="pt-2 mb-0">Documentos</h5>
+        <span class="grey-text">
+          (<em><strong>Archivos</strong></em>: {{ docs.length }} |
+          <em><strong>Tamaño</strong></em>:
+          <span :class="[size(docs)<2 ? 'grey-text' : 'red-text']">{{ size(docs) }}MB</span>/2MB)
+          </span>
       </div>
 
-      <div>
-        <button :disabled="lock" class="app_prospect_btn" @click="createProspect">Add</button>
+      <!-- actions -->
+      <div class="halfway">
+        <a @click="doc = {'name':'','data':''}, modal = true" class="btn-floating btn-large waves-effect waves-light btn modal-trigger" href="#addDoc">
+          <i class="material-icons">add</i>
+        </a>
+      </div>
+
+      <!-- data -->
+      <div class="row data">
+        <div v-if="docs.length">
+          <a v-for="(_, index) in docs" :key="index" @click="doc = _" class="col m3 s6 waves-effect center modal-trigger" href="#preview">
+            <a @click.prevent="docs.splice(index, 1)" class="btn-floating waves-effect waves-light red remove">
+              <i class="material-icons">close</i>
+            </a>
+            <i class="material-icons large color-secondary">
+              insert_drive_file
+            </i>
+            <span class="info grey-text">
+              <span class="uppercase">{{ type(_.data) }}</span>
+              | {{ size(_.data) }} MB
+            </span>
+            <h6>{{ _.name }}</h6>
+          </a>
+        </div>
+        <div class="grey-text center mb-2 mt-1" v-else>
+          <i class="material-icons large">insert_drive_file</i>
+          <h5 class="m-0">No hay Documentos</h5>
+        </div>
+      </div>
+    </div>
+
+    <!-- actions -->
+    <div class="col m12 s12 mb-5 center">
+      <button :disabled="lock" class="btn waves-effect waves-light" @click="createProspect">
+        <i class="material-icons left">send</i>
+        Enviar
+      </button>
+      <button :disabled="lock" class="btn waves-effect waves-light bg-error" @click="cancel">
+        <i class="material-icons left">close</i>
+        Salir
+      </button>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="addDoc" class="modal modal-fixed-footer">
+      <div class="modal-content">
+        <h5 class="bg-main p-2 m-0 white-text">Agregar Documento</h5>
+        <div class="row">
+          <div v-if="modal" class="col m12 s12 center pt-1">
+            <object v-if="!errorOnLoad && doc.data" :data="doc.data" width="100%" @error="errorOnLoad = true" height="250px">
+              <embed :src="doc.data" type="application/*" />
+            </object>
+            <div v-else-if="errorOnLoad && doc.data" class="mt-5">
+              <i class="material-icons large">insert_drive_file</i>
+              <h6>
+                No ha sido posible cargar el documento.
+                <br>
+                Es posible que el contenido haya sido bloqueado por el navegador o éste dañado
+              </h6>
+            </div>
+            <div v-else class="grey-text">
+              <i class="material-icons large">insert_drive_file</i>
+              <h6>Documento (JPG/PNG/PDF)</h6>
+              <span>(Sin documento seleccionado)</span>
+            </div>
+          </div>
+
+          <div v-if="modal" class="col m12 s12">
+            <div class="file-field input-field col m12 s12 my-0">
+              <div class="btn p-0">
+                <span><i class="material-icons px-1">file_upload</i></span>
+                <input name="Documento" accept="docs/*" type="file" ref="file" v-on:change="selectFile()" class="m-0 p-0 inputFile">
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path file-pathV" type="text" placeholder="Subir un Documento">
+              </div>
+            </div>
+
+            <div class="input-field col m12 s12">
+              <input id="docName" type="text" v-model="doc.name">
+              <label for="docName">Nombre</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a @click="docs.push(doc), modal = false" class="modal-close waves-effect waves-green green-text btn-flat">Agregar</a>
+        <a @click="modal = false" class="modal-close waves-effect waves-red red-text btn-flat">Cancelar</a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import M from 'materialize-css'
 import ProspectsService from '@/services/ProspectsService'
+
 export default {
   data () {
     return {
@@ -85,9 +175,14 @@ export default {
       phone: '',
       RFC: '',
       docs: [],
-      docName: '',
 
-      lock: false
+      doc: {
+        name: '',
+        data: ''
+      },
+      lock: false,
+      modal: false,
+      errorOnLoad: false
     }
   },
   methods: {
@@ -121,10 +216,37 @@ export default {
           phone: this.phone,
           RFC: this.RFC,
           docs: this.docs
+        }).then((res) => {
+          if (res.data.success) {
+            this.$alert_success.fire({
+              icon: 'success',
+              title: 'Creado',
+              text: res.data.message,
+              confirmButtonText: 'Aceptar'
+            })
+          } else {
+            this.$alert_success.fire({
+              icon: 'error',
+              title: 'Error',
+              text: res.data.message,
+              confirmButtonText: 'Aceptar'
+            })
+          }
+        }).catch(() => {
+          this.$alert_error.fire({
+            html: '<h5 class="bold">Ha ocurrido un error!</h5>' +
+                  '<span>Intente realizar de nuevo la operación y si persiste el problema favor de contactar al Soporte Técnico</span>',
+            confirmButtonText: 'Aceptar'
+          }).then(() => {})
         })
         this.$router.push({ name: 'Prospects' })
       } else {
-        alert(`Size: ${this.fixed(megaBytes)}MB`)
+        this.$alert_warning.fire({
+          html: '<h5 class="bold">Límite de Megabytes excedido</h5>' +
+                `<em class="grey-text">(<span class="red-text">${this.fixed(megaBytes)}MB</span> / 2MB)</em><br>` +
+                '<span>Considera usar archivos o formatos más ligeros!</span>',
+          confirmButtonText: 'Aceptar'
+        })
         me.lock = false
       }
     },
@@ -132,6 +254,7 @@ export default {
     /* Select a Doc */
     selectFile () {
       let me = this
+      me.errorOnLoad = false
 
       const getBase64 = (file) => {
         return new Promise((resolve, reject) => {
@@ -145,49 +268,60 @@ export default {
       const file = document.querySelector('.inputFile').files[0]
       getBase64(file).then(
         data => {
-          const file = {
-            name: 'Doc',
-            data: data
+          const megabytes = me.size(data)
+          if (megabytes >= 2) {
+            me.modal = false
+            me.doc = {
+              name: '',
+              data: ''
+            }
+            this.$alert_warning.fire({
+              html: '<h5 class="bold">Límite de Megabytes excedido</h5>' +
+                    `<em class="grey-text">(<span class="red-text">${this.fixed(megabytes)}MB</span> / 2MB)</em><br>` +
+                    '<span>Considera usar archivos o formatos más ligeros!</span>',
+              confirmButtonText: 'Aceptar'
+            })
+          } else {
+            me.doc.data = data
           }
-          me.docs.push(file)
         }
-      )
+      ).finally(() => {
+        me.modal = true
+      })
     },
 
     size (data) {
       const size = new TextEncoder().encode(JSON.stringify(data)).length
       const kiloBytes = size / 1024
       const megaBytes = kiloBytes / 1024
-      return megaBytes
+      return this.fixed(megaBytes)
+    },
+
+    type (data) {
+      return data ? data.split('/')[1].split(';')[0] : null
     },
 
     /* Fix a Number */
     fixed (number) {
       return Number(number).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+    },
+
+    cancel () {
+      this.$alert_warning.fire({
+        html: '<h5 class="bold">¿Estás seguro que deseas salir?</h5>' +
+              '<span>Al salir perderas toda la información ya capturada!</span>',
+        showCancelButton: true,
+        confirmButtonText: 'Salir',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$router.push({ name: 'Prospects' })
+        }
+      })
     }
+  },
+  mounted () {
+    M.Modal.init(document.querySelectorAll('.modal'), {})
   }
 }
 </script>
-<style type="text/css">
-.form input, .form textarea {
-  width: 500px;
-  padding: 10px;
-  border: 1px solid #e0dede;
-  outline: none;
-  font-size: 12px;
-}
-.form div {
-  margin: 20px;
-}
-.app_prospect_btn {
-  background: #4d7ef7;
-  color: #fff;
-  padding: 10px 80px;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: bold;
-  width: 520px;
-  border: none;
-  cursor: pointer;
-}
-</style>

@@ -70,7 +70,7 @@ app.post('/prospect/create', async (req, res) => {
       console.log(error);
       res.send({
         success: false,
-        message: `Ha ocurrido algo: ${error}`
+        message: `${error}`
       })
     }
         
