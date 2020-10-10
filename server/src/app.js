@@ -3,16 +3,19 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
-
 const app = express()
+const mongoose = require('mongoose')
+
 app.use(morgan('combined'))
 app.use(bodyParser.json({ limit: '2mb' }))
 app.use(cors())
 
 // Mongoose
-const mongoose = require('mongoose')
 const uri = "mongodb+srv://LELV:81997912@cluster0.qljii.mongodb.net/ProspectsDB?retryWrites=true&w=majority"
-mongoose.connect(uri)
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, "\n\n\x1b[36m Error in Connection to MongoDB:\x1b[0m\n\n"))
 db.once('open', (callback) => {
@@ -88,7 +91,7 @@ app.get('/prospects', async (req, res) => {
       console.log(error);
       res.send({
         success: false,
-        message: `Ha ocurrido algo: ${error}`
+        message: `${error}`
       })
     }
 
@@ -106,7 +109,7 @@ app.get('/prospect/:id', (req, res) => {
       console.log(error);
       res.send({
         success: false,
-        message: `Ha ocurrido algo: ${error}`
+        message: `${error}`
       })
     }
 
@@ -118,25 +121,15 @@ app.get('/prospect/:id', (req, res) => {
 app.put('/prospect/update/:id', async (req, res) => {
   const db = req.db;
   
-  await Prospect.findById(req.params.id, 'firstname lastname1 lastname2 street housenumber suburb postalcode phone RFC docs status observations', (error, prospect) => {
+  await Prospect.findById(req.params.id, 'status observations', (error, prospect) => {
     if (error) {
       console.log(error);
       res.send({
         success: false,
-        message: `Ha ocurrido algo: ${error}`
+        message: `${error}`
       })
     }
 
-    prospect.firstname = req.body.firstname
-    prospect.lastname1 = req.body.lastname1
-    prospect.lastname2 = req.body.lastname2
-    prospect.street = req.body.street
-    prospect.housenumber = req.body.housenumber
-    prospect.suburb = req.body.suburb
-    prospect.postalcode = req.body.postalcode
-    prospect.phone = req.body.phone
-    prospect.RFC = req.body.RFC
-    prospect.docs = req.body.docs
     prospect.status = req.body.status
     prospect.observations = req.body.observations
 
@@ -145,12 +138,13 @@ app.put('/prospect/update/:id', async (req, res) => {
         console.log(error);
         res.send({
           success: false,
-          message: `Ha ocurrido algo: ${error}`
+          message: `${error}`
         })
       }
 
       res.send({
-        success: true
+        success: true,
+        message: 'Prospecto evaluado exitosamente!'
       })
     })
   })
@@ -164,7 +158,7 @@ app.delete('/prospect/delete/:id', async (req, res) => {
       console.log(error);
       res.send({
         success: false,
-        message: `Ha ocurrido algo: ${error}`
+        message: `${error}`
       })
     }
 

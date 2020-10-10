@@ -219,25 +219,26 @@ export default {
         }).then((res) => {
           if (res.data.success) {
             this.$alert_success.fire({
-              icon: 'success',
               title: 'Creado',
               text: res.data.message,
               confirmButtonText: 'Aceptar'
             })
           } else {
-            this.$alert_success.fire({
-              icon: 'error',
+            this.$alert_error.fire({
               title: 'Error',
               text: res.data.message,
               confirmButtonText: 'Aceptar'
             })
+            location.reload()
           }
         }).catch(() => {
           this.$alert_error.fire({
             html: '<h5 class="bold">Ha ocurrido un error!</h5>' +
                   '<span>Intente realizar de nuevo la operación y si persiste el problema favor de contactar al Soporte Técnico</span>',
             confirmButtonText: 'Aceptar'
-          }).then(() => {})
+          }).then(() => {
+            me.lock = false
+          })
         })
         this.$router.push({ name: 'Prospects' })
       } else {

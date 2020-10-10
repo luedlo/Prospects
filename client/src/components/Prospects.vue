@@ -1,6 +1,6 @@
 <template>
   <div class="prospects">
-    <h3 class="center color-main">Prospectos</h3>
+    <h4 class="center color-main">Prospectos</h4>
     <hr>
 
     <!-- add -->
@@ -35,8 +35,8 @@
             <td>{{ empty(_.lastname1) }}</td>
             <td>{{ empty(_.lastname2) }}</td>
             <td>
-              <span v-if="_.status == 1" class="badge bg-secondary">Enviado</span>
-              <span v-else-if="_.status == 2" class="badge bg-main">Autorizado</span>
+              <span v-if="_.status == 1" class="badge bg-main">Enviado</span>
+              <span v-else-if="_.status == 2" class="badge bg-secondary">Autorizado</span>
               <span v-else class="badge bg-error">Rechazado</span>
             </td>
             <td align="center">

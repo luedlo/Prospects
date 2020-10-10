@@ -6,6 +6,11 @@
   --error: #C33C54;
 }
 
+::selection {
+  color: whitesmoke;
+  background-color: var(--secondary);
+}
+
 html {
   width: 100vw;
   height: 100vh;

@@ -1,5 +1,8 @@
 <template>
   <div class="prospect">
+    <h4 class="center color-main">Información de Prospecto</h4>
+    <hr>
+
     <div class="col m12 s12 content">
       <!-- img -->
       <div class="row img bg-main">
@@ -35,7 +38,7 @@
 
       <!-- actions -->
       <div class="halfway">
-        <router-link class="btn-floating btn-large waves-effect waves-light bg-warning tooltipped mr-1" data-position="top" data-tooltip="Evaluar" v-bind:to="{ name: 'EditProspect', params: { id: id } }">
+        <router-link v-if="status == 1" class="btn-floating btn-large waves-effect waves-light bg-warning tooltipped mr-1" data-position="top" data-tooltip="Evaluar" v-bind:to="{ name: 'EditProspect', params: { id: id } }">
           <i class="material-icons">assignment</i>
         </router-link>
         <a class="btn-floating btn-large waves-effect waves-light bg-error tooltipped" data-position="top" data-tooltip="Eliminar" href @click.prevent="deleteProspect">
@@ -75,7 +78,7 @@
 
           <div v-if="status == 3" class="col m12 s12 mt-1">
             <h6 class="bold">Descripción:</h6>
-            <span>{{ empty(description) }}</span>
+            <span>{{ empty(observations) }}</span>
           </div>
         </div>
       </div>
@@ -160,7 +163,7 @@ export default {
       RFC: '',
       docs: [],
       status: '',
-      description: '',
+      observations: '',
 
       doc: {
         name: '',
@@ -186,12 +189,12 @@ export default {
       this.RFC = response.data.RFC
       this.docs = response.data.docs
       this.status = response.data.status
-      this.description = response.data.description
+      this.observations = response.data.observations
     },
 
     deleteProspect () {
       this.$alert_warning.fire({
-        html: '<h5 class="bold">Eliminar Prospecto</h5>' +
+        html: '<h5 class="bold">Eliminar</h5>' +
               '<span>¿Estás seguro que deseas eliminarlo?<br><p class="grey-text">(Esta acción no es revertible!)</p></span>',
         showCancelButton: true,
         confirmButtonText: 'Eliminar',

@@ -39,7 +39,7 @@
       <li><router-link class="waves-effect sidenav-close" v-bind:to="{ name: 'HelloWorld' }"><i class="material-icons">info</i>Acerca de..</router-link></li>
     </ul>
 
-    <div class="container my-5">
+    <div class="container mt-3 mb-5">
       <router-view/>
     </div>
   </div>
