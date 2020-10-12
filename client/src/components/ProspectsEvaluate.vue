@@ -39,19 +39,6 @@
       </div>
     </div>
 
-    <!-- add -->
-    <div class="fixed-action-btn">
-      <router-link id="add" v-bind:to="{ name: 'NewProspect' }" class="btn-floating btn-large waves-effect waves-light tooltipped" data-position="left" data-tooltip="Agregar Prospecto">
-        <i class="material-icons large">add</i>
-      </router-link>
-      <!-- Tap Target Structure -->
-      <div class="tap-target bg-submain" data-target="add">
-        <div class="tap-target-content white-text">
-          <h5>Nuevo Prospecto</h5>
-          <p>Hey Promotor! Aquí puedes registrar un nuevo prospecto a cliente!</p>
-        </div>
-      </div>
-    </div>
     <div v-if="prospects.length > 0">
       <!-- data -->
       <table class="striped centered responsive-table z-depth-1">
@@ -74,9 +61,12 @@
               <span v-else-if="_.status == 2" class="badge bg-secondary">Autorizado</span>
               <span v-else class="badge bg-error">Rechazado</span>
             </td>
-            <td align="center">
+            <td>
               <router-link class="btn waves-effect waves-light bg-submain tooltipped" data-position="top" data-tooltip="Ver" v-bind:to="{ name: 'Prospect', params: { id: _._id } }">
                 <i class="material-icons">visibility</i>
+              </router-link>
+              <router-link v-if="_.status == 1" class="btn waves-effect waves-light bg-warning tooltipped" data-position="top" data-tooltip="Evaluar" v-bind:to="{ name: 'EditProspect', params: { id: _._id } }">
+                <i class="material-icons">assignment</i>
               </router-link>
             </td>
           </tr>
@@ -96,7 +86,7 @@ import M from 'materialize-css'
 import ProspectsService from '@/services/ProspectsService'
 
 export default {
-  name: 'Prospects',
+  name: 'ProspectsEvaluate',
   components: { loader },
   data () {
     return {
@@ -147,10 +137,10 @@ export default {
   },
   mounted () {
     this.getProspects()
+    M.TapTarget.init(document.querySelector('.tap-target'), {})
   },
   updated () {
     M.Tooltip.init(document.querySelectorAll('.tooltipped'), {})
-    M.TapTarget.init(document.querySelector('.tap-target'), {})
     M.FormSelect.init(document.querySelectorAll('select'), {})
     if (!this.prospects.length) {
       M.TapTarget.getInstance(document.querySelector('.tap-target')).open()

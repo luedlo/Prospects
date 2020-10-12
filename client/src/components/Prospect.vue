@@ -2,6 +2,10 @@
   <div class="prospect">
     <loader v-if="loader"/>
     <div v-show="content">
+      <a href class="btn waves-effect waves-light right" @click.prevent="$router.go(-1)">
+        <i class="material-icons left">chevron_left</i>
+        Atrás
+      </a>
       <h4 class="center color-main">Información de Prospecto</h4>
       <hr>
 
@@ -39,10 +43,7 @@
         </div>
 
         <!-- actions -->
-        <div class="halfway">
-          <router-link v-if="status == 1" class="btn-floating btn-large waves-effect waves-light bg-warning tooltipped mr-1" data-position="top" data-tooltip="Evaluar" v-bind:to="{ name: 'EditProspect', params: { id: id } }">
-            <i class="material-icons">assignment</i>
-          </router-link>
+        <div v-if="status == 1" class="halfway">
           <a class="btn-floating btn-large waves-effect waves-light bg-error tooltipped" data-position="top" data-tooltip="Eliminar" href @click.prevent="deleteProspect">
             <i class="material-icons">delete</i>
           </a>

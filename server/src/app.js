@@ -5,13 +5,16 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cluster = require('cluster')
 const bodyParser = require('body-parser')
+const history = require('connect-history-api-fallback')
 const app = express()
 const PORT = 8081
+const HOST = '0.0.0.0'
 
+app.use(cors())
+app.use(history())
 app.use(morgan('combined'))
 app.use(bodyParser.json({ limit: '2.1mb' }))
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors())
 
 // Cluster
 if (cluster.isMaster) {
@@ -47,7 +50,8 @@ if (cluster.isMaster) {
   })
 
   // ENV
-  app.listen(PORT)
+  app.listen(PORT, HOST)
+  console.log(`\x1b[36m Running on http://${HOST}:${PORT} \x1b[0m\n`);
   console.log('\x1b[36m Worker %d running! \x1b[0m\n', cluster.worker.id);
 }
 

@@ -150,7 +150,8 @@
             </div>
             <div v-else class="grey-text">
               <i class="material-icons large">insert_drive_file</i>
-              <h6>Documento (JPG/PNG/PDF)</h6>
+              <h6 class="m-0">Documento</h6>
+              <p class="m-0">( jpg, png, svg, ico, rar, zip, pdf, docx, pptx, xlsx )</p>
               <span>(Sin documento seleccionado)</span>
             </div>
           </div>
@@ -159,7 +160,7 @@
             <div class="file-field input-field col m12 s12 my-0" :class="{ 'error': hasError('Nombre') }">
               <div class="btn p-0">
                 <span><i class="material-icons px-1">file_upload</i></span>
-                <input name="Documento" data-vv-scope="add" v-validate="'required'" accept="*" type="file" ref="file" v-on:change="selectFile()" class="m-0 p-0 inputFile">
+                <input name="Documento" data-vv-scope="add" v-validate="'required|ext:jpg,png,svg,ico,rar,zip,pdf,docx,pptx,xlsx'" accept="docs/*" type="file" ref="file" v-on:change="selectFile()" class="m-0 p-0 inputFile">
               </div>
               <div class="file-path-wrapper">
                 <input class="file-path file-pathV" type="text" placeholder="Subir un Documento">
@@ -330,6 +331,7 @@ export default {
     /* Select a Doc */
     selectFile () {
       let me = this
+      this.loader = true
       me.errorOnLoad = false
 
       const getBase64 = (file) => {
@@ -342,16 +344,19 @@ export default {
       }
 
       const file = document.querySelector('.inputFile').files[0]
-      if (file) {
+      if (file && ((file.size / 1024) / 1024) <= 2) {
         getBase64(file).then(
-          data => {
-            const megabytes = me.size(data)
+          async data => {
+            const d = await data
+            const megabytes = me.size(d)
+            console.log(megabytes)
             if (megabytes >= 2) {
               me.modal = false
               me.doc = {
                 name: '',
                 data: ''
               }
+              me.loader = false
               this.$alert_warning.fire({
                 html: '<h5 class="bold">Límite de Megabytes excedido</h5>' +
                       `<em class="grey-text">(<span class="red-text">${this.fixed(megabytes)}MB</span> / 2MB)</em><br>` +
@@ -360,13 +365,17 @@ export default {
               })
             } else {
               me.doc.data = data
+              me.loader = false
             }
           }
         ).finally(() => {
+          me.loader = false
           me.modal = true
         })
       } else {
+        me.modal = false
         me.doc.data = ''
+        me.loader = false
         me.modal = true
       }
     },
@@ -429,7 +438,7 @@ export default {
   },
   mounted () {
     M.Modal.init(document.querySelectorAll('.modal'), {})
-    this.loader = false
+    setTimeout(() => { this.loader = false }, 1000)
   }
 }
 </script>

@@ -12,24 +12,24 @@
       <div class="section">
         <div class="container" style="width:100vw">
           <div class="row my-3">
-            <router-link class="col m4 s12" v-bind:to="{ name: 'NewProspect' }">
+            <router-link class="col m4 s12" v-bind:to="{ name: 'Prospects' }">
               <div class="card new col m12 s12">
                 <div class="icon">
-                <i class="material-icons large">add</i>
+                <i class="material-icons large">list</i>
               </div>
               <div class="text">
-                <p>Nuevo Prospecto</p>
+                <p>Promotores</p>
               </div>
               </div>
             </router-link>
 
-            <router-link class="col m4 s12" v-bind:to="{ name: 'Prospects' }">
+            <router-link class="col m4 s12" v-bind:to="{ name: 'ProspectsEvaluate' }">
               <div class="card list col m12 s12">
                 <div class="icon">
-                  <i class="material-icons large">person</i>
+                  <i class="material-icons large">list</i>
                 </div>
                 <div class="text">
-                  <p>Ver Prospectos</p>
+                  <p>Evaluadores</p>
                 </div>
               </div>
             </router-link>

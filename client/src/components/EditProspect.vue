@@ -3,6 +3,10 @@
   <div class="prospect">
     <loader v-if="loader"/>
     <div v-show="content">
+      <a href class="btn waves-effect waves-light right" @click.prevent="$router.go(-1)">
+        <i class="material-icons left">chevron_left</i>
+        Atrás
+      </a>
       <h4 class="center color-main">Evaluar Prospecto</h4>
       <hr>
 
@@ -206,7 +210,7 @@ export default {
                   '<span>Este prospecto no existe o ha sido eliminado de nuestros registros!</span>',
             confirmButtonText: 'Aceptar'
           }).then(() => {
-            this.$router.push({ name: 'Prospects' })
+            this.$router.push({ name: 'ProspectsEvaluate' })
           })
         }
       }).catch((error) => {
@@ -217,7 +221,7 @@ export default {
                 '<span>Intente realizar de nuevo la operación y si persiste el problema favor de contactar al Soporte Técnico</span>',
           confirmButtonText: 'Aceptar'
         }).then(() => {
-          this.$router.push({ name: 'Prospects' })
+          this.$router.push({ name: 'ProspectsEvaluate' })
         })
       })
     },
@@ -275,7 +279,7 @@ export default {
             text: res.data.message,
             confirmButtonText: 'Aceptar'
           })
-          this.$router.push({ name: 'Prospects' })
+          this.$router.push({ name: 'ProspectsEvaluate' })
         } else {
           this.loader = false
           this.$alert_error.fire({

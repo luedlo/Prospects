@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import About from '@/components/About'
 import Prospect from '@/components/Prospect'
 import Prospects from '@/components/Prospects'
+import ProspectsEvaluate from '@/components/ProspectsEvaluate'
 import NewProspect from '@/components/NewProspect'
 import EditProspect from '@/components/EditProspect'
 
@@ -18,27 +19,32 @@ export default new Router({
       component: HelloWorld
     },
     {
-      path: '/about',
+      path: '/acercade',
       name: 'About',
       component: About
     },
     {
-      path: '/prospects',
+      path: '/promotor',
       name: 'Prospects',
       component: Prospects
     },
     {
-      path: '/prospect/new',
+      path: '/evaluador',
+      name: 'ProspectsEvaluate',
+      component: ProspectsEvaluate
+    },
+    {
+      path: '/prospecto/nuevo',
       name: 'NewProspect',
       component: NewProspect
     },
     {
-      path: '/prospect/:id',
+      path: '/prospecto/:id',
       name: 'Prospect',
       component: Prospect
     },
     {
-      path: '/prospect/edit/:id',
+      path: '/prospecto/evaluar/:id',
       name: 'EditProspect',
       component: EditProspect
     }
