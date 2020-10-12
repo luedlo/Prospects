@@ -129,14 +129,14 @@ export default {
 
     async filter () {
       await this.getProspects()
-      this.prospects = this.prospects.filter(el => {
+      this.prospects = this.prospects.filter(prospect => {
         switch (this.criterion) {
           case 'firstname':
-            return el.firstname.toLowerCase().includes(this.search.toLowerCase()) && el.status.includes(this.status)
+            return prospect.firstname.toLowerCase().includes(this.search.toLowerCase()) && prospect.status.includes(this.status)
           case 'lastname1':
-            return el.lastname1.toLowerCase().includes(this.search.toLowerCase()) && el.status.includes(this.status)
+            return prospect.lastname1.toLowerCase().includes(this.search.toLowerCase()) && prospect.status.includes(this.status)
           case 'lastname2':
-            return el.lastname2.toLowerCase().includes(this.search.toLowerCase()) && el.status.includes(this.status)
+            return prospect.lastname2.toLowerCase().includes(this.search.toLowerCase()) && prospect.status.includes(this.status)
         }
       })
     },
