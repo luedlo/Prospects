@@ -1,7 +1,43 @@
 <template>
-  <div class="prospects">
+  <div class="prospect">
+    <loader v-if="loader"/>
     <h4 class="center color-main">Prospectos</h4>
     <hr>
+
+    <!-- Filters -->
+    <div class="col m12 s12 mt-1">
+      <div class="row m-0">
+        <div class="input-field col m1 s2 py-1 center">
+          <i class="material-icons">filter_list</i>
+        </div>
+        <div class="input-field col m4 s10">
+          <input v-model="search" id="name" type="text" v-on:keyup.enter="filter()">
+          <label for="name">Nombre</label>
+        </div>
+        <div class="input-field col m3 s9">
+          <select v-model="criterion" v-on:change="filter()">
+            <option value="firstname">Nombre(s)</option>
+            <option value="lastname1">A. Paterno</option>
+            <option value="lastname2">A. Materno</option>
+          </select>
+          <label>Estatus</label>
+        </div>
+        <div class="input-field col m2 s9">
+          <select v-model="status" v-on:change="filter()">
+            <option value="1">Enviado</option>
+            <option value="2">Autorizado</option>
+            <option value="3">Rechazado</option>
+            <option value="">Todos</option>
+          </select>
+          <label>Estatus</label>
+        </div>
+        <div class="input-field col m2 s4 center">
+          <a class="btn-floating waves-effect waves-light" @click="filter()">
+            <i class="material-icons">search</i>
+          </a>
+        </div>
+      </div>
+    </div>
 
     <!-- add -->
     <div class="fixed-action-btn">
@@ -11,12 +47,11 @@
       <!-- Tap Target Structure -->
       <div class="tap-target bg-submain" data-target="add">
         <div class="tap-target-content white-text">
-          <h5>Agregar Prospecto</h5>
-          <p>Hey Promotor! Registra un nuevo prospecto a cliente para empezar a usar el sistema!</p>
+          <h5>Nuevo Prospecto</h5>
+          <p>Hey Promotor! Aquí puedes registrar un nuevo prospecto a cliente!</p>
         </div>
       </div>
     </div>
-
     <div v-if="prospects.length > 0">
       <!-- data -->
       <table class="striped centered responsive-table z-depth-1">
@@ -56,20 +91,54 @@
 </template>
 
 <script>
+import loader from '@/Loader'
 import M from 'materialize-css'
 import ProspectsService from '@/services/ProspectsService'
 
 export default {
   name: 'Prospects',
+  components: { loader },
   data () {
     return {
-      prospects: []
+      prospects: [],
+      loader: true,
+
+      criterion: 'firstname',
+      search: '',
+      status: ''
     }
   },
   methods: {
     async getProspects () {
-      const response = await ProspectsService.fetchProspects()
-      this.prospects = response.data.prospects
+      await ProspectsService.fetchProspects().then((response) => {
+        const data = response.data
+        this.prospects = data.prospects
+        this.loader = false
+      }).catch((error) => {
+        this.loader = false
+        this.$alert_error.fire({
+          html: '<h5 class="bold">Ha ocurrido un error!</h5>' +
+                `<em class="grey-text">${error}</em><br><br>` +
+                '<span>Intente realizar de nuevo la operación y si persiste el problema favor de contactar al Soporte Técnico</span>',
+          confirmButtonText: 'Aceptar'
+        }).then(() => {
+          this.$router.push({ name: 'HelloWorld' })
+        })
+      })
+    },
+
+    async filter () {
+      await this.getProspects()
+      this.prospects = this.prospects.filter(el => {
+        switch (this.criterion) {
+          case 'firstname':
+            return el.firstname.toLowerCase().includes(this.search.toLowerCase()) && el.status.includes(this.status)
+          case 'lastname1':
+            return el.lastname1.toLowerCase().includes(this.search.toLowerCase()) && el.status.includes(this.status)
+          case 'lastname2':
+            return el.lastname2.toLowerCase().includes(this.search.toLowerCase()) && el.status.includes(this.status)
+        }
+      })
     },
 
     empty (data) {
@@ -78,15 +147,11 @@ export default {
   },
   mounted () {
     this.getProspects()
-    // this.$alert_error.fire({
-    //   html: '<h5 class="bold">Ha ocurrido un error!</h5>' +
-    //         '<span>Intente realizar de nuevo la operación y si persiste el problema favor de contactar al Soporte Técnico</span>',
-    //   confirmButtonText: 'Aceptar'
-    // }).then(() => {})
   },
   updated () {
     M.Tooltip.init(document.querySelectorAll('.tooltipped'), {})
     M.TapTarget.init(document.querySelector('.tap-target'), {})
+    M.FormSelect.init(document.querySelectorAll('select'), {})
     if (!this.prospects.length) {
       M.TapTarget.getInstance(document.querySelector('.tap-target')).open()
     }

@@ -10,8 +10,9 @@ require('@/assets/css/utilities.css')
 require('@/assets/css/general.css')
 require('@/assets/css/materialize.css')
 
-// Require SweetAlert2
-require('@/assets/js/alerts.js')
+// Require JS Scripts
+require('@/assets/js/alerts')
+require('@/assets/js/validations')
 
 Vue.config.productionTip = false
 

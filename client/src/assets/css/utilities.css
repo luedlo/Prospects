@@ -15,6 +15,14 @@
 .bold { font-weight: bold !important; }
 .shadow { text-shadow: 0 0 10px black; }
 .uppercase { text-transform: uppercase; }
+
+.block { display: block !important }
+.flex-1 { flex: 1 }
+.flex { display: flex }
+@media only screen and (max-width: 992px) {
+  .flex { display: block; }
+}
+.flex-1 img { height: 10vh; object-fit: contain; }
 /* .active { background: var(--main); } */
 
 /* Margin */
