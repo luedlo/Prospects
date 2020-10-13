@@ -160,7 +160,7 @@
             <div class="file-field input-field col m12 s12 my-0" :class="{ 'error': hasError('Nombre') }">
               <div class="btn p-0">
                 <span><i class="material-icons px-1">file_upload</i></span>
-                <input name="Documento" accept=".jpg,.jpeg,.png,.gif,.svg,.ico,.rar,.zip,.pdf,.docx,.pptx,.xlsx" data-vv-scope="add" v-validate="'required|ext:jpg,jpeg,png,svg,ico,rar,zip,pdf,docx,pptx,xlsx|size:1024'" type="file" ref="file" v-on:change="selectFile()" class="m-0 p-0 inputFile">
+                <input name="Documento" accept=".jpg,.jpeg,.png,.gif,.svg,.ico,.rar,.zip,.pdf,.docx,.pptx,.xlsx" data-vv-scope="add" v-validate="'required|ext:jpg,jpeg,png,gif,svg,ico,rar,zip,pdf,docx,pptx,xlsx|size:1024'" type="file" ref="file" v-on:change="selectFile()" class="m-0 p-0 inputFile">
               </div>
               <div class="file-path-wrapper">
                 <input v-if="modal" class="file-path file-pathV" type="text" placeholder="Subir un Documento">
