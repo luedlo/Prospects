@@ -3,21 +3,22 @@
     <nav class="bg-secondary px-1">
       <div class="nav-wrapper">
         <div class="hide-on-med-and-down">
-          <router-link v-bind:to="{ name: 'HelloWorld' }" class="left">
+          <a href="/" class="left">
             <img class="responsive-img circle" src="./assets/img/logo.png" width="65px" alt="Logo" />
-          </router-link>
-          <router-link v-bind:to="{ name: 'HelloWorld' }" class="brand-logo ml-1 left">
+          </a>
+          <a href="/" class="brand-logo ml-1 left">
             ConCrédito
-          </router-link>
+          </a>
         </div>
         <div class="hide-on-med-and-up">
-          <router-link v-bind:to="{ name: 'HelloWorld' }" class="brand-logo ml-1 center">
+          <a href="/" class="brand-logo ml-1 center">
             ConCrédito
-          </router-link>
+          </a>
         </div>
 
         <a data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><router-link class="waves-effect" v-bind:to="{ name: 'HelloWorld' }">Inicio</router-link></li>
           <li><router-link class="waves-effect" v-bind:to="{ name: 'Prospects' }">Promotores</router-link></li>
           <li><router-link class="waves-effect" v-bind:to="{ name: 'ProspectsEvaluate' }">Evaluadores</router-link></li>
           <li><router-link class="waves-effect" v-bind:to="{ name: 'About' }">Acerca de..</router-link></li>

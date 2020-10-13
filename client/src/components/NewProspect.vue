@@ -34,7 +34,7 @@
 
         <div class="col m12 s12">
           <div class="input-field col m6 s12" :class="{ 'error': hasError('Calle') }">
-            <input name="Calle" data-vv-scope="new" v-validate="'required|max:50'" id="street" type="text" v-model="street">
+            <input name="Calle" data-vv-scope="new" v-validate="'required|max:100'" id="street" type="text" v-model="street">
             <label for="street">Calle <span class="color-error">*</span></label>
             <strong class="color-error"><em>{{ error('Calle') }}</em></strong>
           </div>
@@ -48,13 +48,13 @@
 
         <div class="col m12 s12">
           <div class="input-field col m6 s12" :class="{ 'error': hasError('Colonia') }">
-            <input name="Colonia" data-vv-scope="new" v-validate="'required|max:50'" id="suburb" type="text" v-model="suburb">
+            <input name="Colonia" data-vv-scope="new" v-validate="'required|max:100'" id="suburb" type="text" v-model="suburb">
             <label for="suburb">Colonia <span class="color-error">*</span></label>
             <strong class="color-error"><em>{{ error('Colonia') }}</em></strong>
           </div>
 
           <div class="input-field col m6 s12" :class="{ 'error': hasError('Código Postal') }">
-            <input name="Código Postal" data-vv-scope="new" v-validate="'required|numeric|max:5'" id="postalcode" type="text" v-model="postalcode">
+            <input name="Código Postal" data-vv-scope="new" v-validate="'required|numeric|max:10'" id="postalcode" type="text" v-model="postalcode">
             <label for="postalcode">Código Postal <span class="color-error">*</span></label>
             <strong class="color-error"><em>{{ error('Código Postal') }}</em></strong>
           </div>
@@ -62,7 +62,7 @@
 
         <div class="col m12 s12">
           <div class="input-field col m6 s12" :class="{ 'error': hasError('Teléfono') }">
-            <input name="Teléfono" data-vv-scope="new" v-validate="'required|numeric|max:10'" id="phone" type="text" v-model="phone">
+            <input name="Teléfono" data-vv-scope="new" v-validate="'required|numeric|max:15'" id="phone" type="text" v-model="phone">
             <label for="phone">Teléfono <span class="color-error">*</span></label>
             <strong class="color-error"><em>{{ error('Teléfono') }}</em></strong>
           </div>
@@ -84,7 +84,7 @@
         <span class="grey-text">
           (<em><strong>Archivos</strong></em>: {{ docs.length }} |
           <em><strong>Tamaño</strong></em>:
-          <span :class="[size(docs)<2 ? 'grey-text' : 'red-text']">{{ size(docs) }}MB</span>/2MB)
+          <span :class="[size(docs)<=10 ? 'grey-text' : 'red-text']">{{ size(docs) }}MB</span>/10MB)
           </span>
       </div>
 
@@ -98,7 +98,7 @@
       <!-- data -->
       <div class="row data">
         <div v-if="docs.length">
-          <div v-for="(_, index) in docs" :key="index" class="col m3 s6 waves-effect center modal-trigger">
+          <div v-for="(_, index) in docs" :key="index" class="col m3 s6 waves-effect center">
             <a @click.prevent="docs.splice(index, 1)" class="btn-floating waves-effect waves-light red remove">
               <i class="material-icons">close</i>
             </a>
@@ -151,7 +151,7 @@
             <div v-else class="grey-text">
               <i class="material-icons large">insert_drive_file</i>
               <h6 class="m-0">Documento</h6>
-              <p class="m-0">( jpg, png, svg, ico, rar, zip, pdf, docx, pptx, xlsx )</p>
+              <p class="m-0">( jpg, jpeg, png, gif, svg, ico, rar, zip, pdf, docx, pptx, xlsx )</p>
               <span>(Sin documento seleccionado)</span>
             </div>
           </div>
@@ -160,16 +160,16 @@
             <div class="file-field input-field col m12 s12 my-0" :class="{ 'error': hasError('Nombre') }">
               <div class="btn p-0">
                 <span><i class="material-icons px-1">file_upload</i></span>
-                <input name="Documento" data-vv-scope="add" v-validate="'required|ext:jpg,png,svg,ico,rar,zip,pdf,docx,pptx,xlsx'" accept="docs/*" type="file" ref="file" v-on:change="selectFile()" class="m-0 p-0 inputFile">
+                <input name="Documento" accept=".jpg,.jpeg,.png,.gif,.svg,.ico,.rar,.zip,.pdf,.docx,.pptx,.xlsx" data-vv-scope="add" v-validate="'required|ext:jpg,jpeg,png,svg,ico,rar,zip,pdf,docx,pptx,xlsx|size:1024'" type="file" ref="file" v-on:change="selectFile()" class="m-0 p-0 inputFile">
               </div>
               <div class="file-path-wrapper">
-                <input class="file-path file-pathV" type="text" placeholder="Subir un Documento">
+                <input v-if="modal" class="file-path file-pathV" type="text" placeholder="Subir un Documento">
               </div>
-              <strong class="color-error"><em>{{ error('Documento') }}</em></strong>
+              <strong class="color-error"><em>{{ error('Documento') ? `${error('Documento')}: ( jpg, jpeg, png, gif, svg, ico, rar, zip, pdf, docx, pptx, xlsx )` : error('Documento') }}</em></strong>
             </div>
 
             <div class="input-field col m12 s12" :class="{ 'error': hasError('Nombre') }">
-              <input name="Nombre" data-vv-scope="add" v-validate="'required|max:25'" id="docName" type="text" v-model="doc.name">
+              <input name="Nombre" data-vv-scope="add" v-validate="'required|max:100'" id="docName" type="text" v-model="doc.name">
               <label for="docName">Nombre <span class="color-error">*</span></label>
               <strong class="color-error"><em>{{ error('Nombre') }}</em></strong>
             </div>
@@ -244,6 +244,15 @@ export default {
   methods: {
     createProspect () {
       let me = this
+      if (!this.docs.length) {
+        this.$alert_warning.fire({
+          html: '<h5 class="bold">Documentos Requeridos</h5>' +
+                '<span>Considera subir al menos un archivo!</span>',
+          confirmButtonText: 'Aceptar'
+        })
+        return
+      }
+
       me.$validator.validateAll('new').then(async valid => {
         if (valid) {
           const data = {
@@ -261,7 +270,7 @@ export default {
 
           const megaBytes = this.size(data)
 
-          if (megaBytes < 2) {
+          if (megaBytes <= 10) {
             me.lock = true
             this.loader = true
             await ProspectsService.createProspect({
@@ -307,7 +316,7 @@ export default {
           } else {
             this.$alert_warning.fire({
               html: '<h5 class="bold">Límite de Megabytes excedido</h5>' +
-                    `<em class="grey-text">(<span class="red-text">${this.fixed(megaBytes)}MB</span> / 2MB)</em><br>` +
+                    `<em class="grey-text">(<span class="red-text">${this.fixed(megaBytes)}MB</span> / 10MB)</em><br>` +
                     '<span>Considera usar archivos o formatos más ligeros!</span>',
               confirmButtonText: 'Aceptar'
             })
@@ -344,13 +353,12 @@ export default {
       }
 
       const file = document.querySelector('.inputFile').files[0]
-      if (file && ((file.size / 1024) / 1024) <= 2) {
+      if (file && ((file.size / 1024) / 1024) <= 10) {
         getBase64(file).then(
           async data => {
             const d = await data
             const megabytes = me.size(d)
-            console.log(megabytes)
-            if (megabytes >= 2) {
+            if (megabytes > 10) {
               me.modal = false
               me.doc = {
                 name: '',
@@ -359,7 +367,7 @@ export default {
               me.loader = false
               this.$alert_warning.fire({
                 html: '<h5 class="bold">Límite de Megabytes excedido</h5>' +
-                      `<em class="grey-text">(<span class="red-text">${this.fixed(megabytes)}MB</span> / 2MB)</em><br>` +
+                      `<em class="grey-text">(<span class="red-text">${this.fixed(megabytes)}MB</span> / 10MB)</em><br>` +
                       '<span>Considera usar archivos o formatos más ligeros!</span>',
                 confirmButtonText: 'Aceptar'
               })
@@ -368,16 +376,14 @@ export default {
               me.loader = false
             }
           }
-        ).finally(() => {
-          me.loader = false
-          me.modal = true
-        })
+        )
       } else {
         me.modal = false
-        me.doc.data = ''
         me.loader = false
-        me.modal = true
+        me.doc.data = ''
       }
+      me.loader = false
+      me.modal = true
     },
 
     addDoc () {
@@ -409,7 +415,7 @@ export default {
 
     /* Fix a Number */
     fixed (number) {
-      return Number(number).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+      return Number(number).toFixed(4).replace(/\d(?=(\d{3})+\.)/g, '$&,')
     },
 
     cancel () {

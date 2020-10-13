@@ -339,7 +339,7 @@ export default {
 
     /* Fix a Number */
     fixed (number) {
-      return Number(number).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+      return Number(number).toFixed(4).replace(/\d(?=(\d{3})+\.)/g, '$&,')
     },
 
     empty (data) {
