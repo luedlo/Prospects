@@ -151,7 +151,7 @@
             <div v-else class="grey-text">
               <i class="material-icons large">insert_drive_file</i>
               <h6 class="m-0">Documento</h6>
-              <p class="m-0">( jpg, jpeg, png, gif, svg, ico, rar, zip, pdf, docx, pptx, xlsx )</p>
+              <p class="m-0">(jpg, jpeg, png, gif, svg, ico, rar, zip, pdf, docx, pptx, xlsx)</p>
               <span>(Sin documento seleccionado)</span>
             </div>
           </div>
